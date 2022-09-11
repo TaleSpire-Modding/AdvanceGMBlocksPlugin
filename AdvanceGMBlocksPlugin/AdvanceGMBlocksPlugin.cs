@@ -3,20 +3,22 @@ using DataModel;
 using HarmonyLib;
 using LordAshes;
 using Newtonsoft.Json;
+using PluginUtilities;
 using RadialUI;
 using UnityEngine;
 
 namespace AdvanceGMBlocks
 {
-    [BepInPlugin(Guid, "AdvanceGMBlocksPlugin", Version)]
+    [BepInPlugin(Guid, "Advance GM Blocks", Version)]
 	[BepInDependency(RadialUIPlugin.Guid)]
 	[BepInDependency(FileAccessPlugin.Guid)]
 	[BepInDependency(AssetDataPlugin.Guid)]
+	[BepInDependency(SetInjectionFlag.Guid)]
 	public partial class AdvanceGMBlocksPlugin : BaseUnityPlugin
 	{
 		// constants
 		public const string Guid = "org.hollofox.plugins.AdvanceGMBlocksPlugin";
-		public const string Version = "1.0.0.0";
+		public const string Version = "1.1.0.0";
 
         // Branch Icons
         private static Sprite AudioSprite = FileAccessPlugin.Image.LoadSprite("file-audio.png");
@@ -42,7 +44,7 @@ namespace AdvanceGMBlocks
             var harmony = new Harmony(Guid);
             harmony.PatchAll();
             
-            ModdingTales.ModdingUtils.Initialize(this, Logger);
+            ModdingTales.ModdingUtils.Initialize(this, Logger, "HolloFoxes'");
             
             RadialUIPlugin.AddCustomButtonGMBlock(Guid,
                 new MapMenu.ItemArgs
@@ -56,17 +58,12 @@ namespace AdvanceGMBlocks
 
 		public void OpenFilters(MapMenuItem mapmenuItem, object obj)
         {
-			Debug.Log("we opened the new button");
-
             var mapMenu = MapMenuManager.OpenMenu(GMBlockInteractMenuBoardTool.block.WorldPosition,true);
 
             _currentKey = (obj as AtmosphereBlock).Id.ToString();
             var result =
                 AssetDataPlugin.ReadInfo(Guid, _currentKey);
             _currentData = string.IsNullOrEmpty(result) ? new GMBlockData() : JsonConvert.DeserializeObject<GMBlockData>(result);
-
-            Debug.Log($"{result}:{_currentKey}:{_currentData}");
-            Debug.Log(JsonConvert.SerializeObject(_currentData));
 
             mapMenu.AddMenuItem(MapMenu.MenuType.BRANCH, AudioBranch,"Audio", icon: AudioSprite, obj:obj);
             mapMenu.AddMenuItem(MapMenu.MenuType.BRANCH, MixerBranch,"Mixer", icon: MixerSprite, obj: obj);
@@ -78,7 +75,6 @@ namespace AdvanceGMBlocks
 
         private void AudioBranch(MapMenu map, object obj)
         {
-            Debug.Log(obj == null);
             map.AddToggleItem(_currentData.EnabledAudio.Ambient,(i, o) =>
             {
                 _currentData.EnabledAudio.Ambient = !_currentData.EnabledAudio.Ambient;
@@ -93,7 +89,6 @@ namespace AdvanceGMBlocks
 
         private void MixerBranch(MapMenu map, object obj)
         {
-            Debug.Log(obj == null);
             map.AddToggleItem(_currentData.EnabledMixer.Ambient, (i, o) =>
             {
                 _currentData.EnabledMixer.Ambient = !_currentData.EnabledMixer.Ambient;
@@ -108,7 +103,6 @@ namespace AdvanceGMBlocks
 
         private void AtmosphereBranch(MapMenu map, object obj)
         {
-            Debug.Log(obj == null);
             map.AddToggleItem(_currentData.EnabledAtmosphere.DayCycle, (i, o) =>
             {
                 _currentData.EnabledAtmosphere.DayCycle = !_currentData.EnabledAtmosphere.DayCycle;

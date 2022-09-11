@@ -6,7 +6,7 @@ using TaleSpire.GameMaster.Blocks;
 
 namespace AdvanceGMBlocks.GMBlockPatches
 {
-    [HarmonyPatch(typeof(GMBlockButtonAtmosphere), "OnApply")]
+    [HarmonyPatch(typeof(GMBlockButtonAtmosphere), "OnApply")] 
     internal class GMBlockMenuPatch
     {
         internal static bool Prefix(MapMenuItem arg1, object arg2, ref GMDataBlockBase ____base)
