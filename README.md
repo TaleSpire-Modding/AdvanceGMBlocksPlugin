@@ -1,5 +1,5 @@
 # Advanced GM Blocks
-[![Push to nuget feed on release](https://github.com/TaleSpire-Modding/AdvanceGMBlocksPlugin/actions/workflows/build.yml/badge.svg)](https://github.com/TaleSpire-Modding/AdvanceGMBlocksPlugin/actions/workflows/build.yml)
+[![Nuget Published](https://github.com/TaleSpire-Modding/AdvanceGMBlocksPlugin/actions/workflows/release.yml/badge.svg)](https://github.com/TaleSpire-Modding/AdvanceGMBlocksPlugin/actions/workflows/release.yml)
 
 This plugin is designed to give GM Blocks more flexibility in how they use it to adjust their environment. For example, you can now use GM blocks solely for Audio/Ambience queues such as a BBEG entering the scene. You may not want to adjust your perfectly lit atmosphere but adjust the audio so this allows you to disable the over-ride so that only the audio tracks and levels changes whilst atmosphere stays the same. Then queue dusk as the battle draws out you use another GM block to transition atmosphere without interupting the music. This mod will bring extra flexibility to the table with more dynamic controls. Because this is a GM tool, only the GM needs this installed for them to benefit from it.
 
