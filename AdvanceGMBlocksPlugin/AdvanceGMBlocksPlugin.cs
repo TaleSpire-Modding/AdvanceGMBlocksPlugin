@@ -14,24 +14,24 @@ namespace AdvanceGMBlocks
 	[BepInDependency(FileAccessPlugin.Guid)]
 	[BepInDependency(AssetDataPlugin.Guid)]
 	[BepInDependency(SetInjectionFlag.Guid)]
-	public partial class AdvanceGMBlocksPlugin : BaseUnityPlugin
+	public sealed class AdvanceGMBlocksPlugin : BaseUnityPlugin
 	{
 		// constants
 		public const string Guid = "org.hollofox.plugins.AdvanceGMBlocksPlugin";
-		public const string Version = "1.1.0.0";
+		public const string Version = "0.0.0.0";
 
         // Branch Icons
-        private static Sprite AudioSprite = FileAccessPlugin.Image.LoadSprite("file-audio.png");
-        private static Sprite MixerSprite = FileAccessPlugin.Image.LoadSprite("sliders.png");
-        private static Sprite AtmosphereSprite = FileAccessPlugin.Image.LoadSprite("cloud.png");
+        private static readonly Sprite AudioSprite = FileAccessPlugin.Image.LoadSprite("file-audio.png");
+        private static readonly Sprite MixerSprite = FileAccessPlugin.Image.LoadSprite("sliders.png");
+        private static readonly Sprite AtmosphereSprite = FileAccessPlugin.Image.LoadSprite("cloud.png");
 
         // Toggle Icons
-        private static Sprite AmbientSprite = FileAccessPlugin.Image.LoadSprite("volume-low.png");
-        private static Sprite MusicSprite = FileAccessPlugin.Image.LoadSprite("music.png");
-        private static Sprite DayCycleSprite = FileAccessPlugin.Image.LoadSprite("sun.png");
-        private static Sprite FogSprite = FileAccessPlugin.Image.LoadSprite("smog.png");
-        private static Sprite ExposureSprite = FileAccessPlugin.Image.LoadSprite("cloud-sun.png");
-        private static Sprite ImageSprite = FileAccessPlugin.Image.LoadSprite("image.png");
+        private static readonly Sprite AmbientSprite = FileAccessPlugin.Image.LoadSprite("volume-low.png");
+        private static readonly Sprite MusicSprite = FileAccessPlugin.Image.LoadSprite("music.png");
+        private static readonly Sprite DayCycleSprite = FileAccessPlugin.Image.LoadSprite("sun.png");
+        private static readonly Sprite FogSprite = FileAccessPlugin.Image.LoadSprite("smog.png");
+        private static readonly Sprite ExposureSprite = FileAccessPlugin.Image.LoadSprite("cloud-sun.png");
+        private static readonly Sprite ImageSprite = FileAccessPlugin.Image.LoadSprite("image.png");
 
 		/// <summary>
 		/// Awake plugin
