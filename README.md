@@ -7,11 +7,6 @@ This plugin is designed to give GM Blocks more flexibility in how they use it to
 
 This plugin works by providing the GM block Radial UI component with a new Filter button. This branches out into 3 sub categories, Audio, Mixer and Atmosphere (Reflecting the Side Panel UI Categories). From there they branch off to the togglable buttons that allow you to disable/re-enable over-rides for that specific GM block. Meaning with small extra work in advance, you can fully utilize these GM blocks how they were intended. ON THE FLY. 
 
-## Changelog
-- 1.2.0: net48 upgrade
-- 1.1.0: Cyberpunk fix
-- 1.0.0: Initial Release
-
 ## Shoutouts
 Shoutout to my Patreons on https://www.patreon.com/HolloFox recognising your
 mighty contribution to my caffeine addiciton:
