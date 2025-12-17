@@ -28,9 +28,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="TaleSpire" Version="0.0.15"></PackageReference>
+    <PackageReference Include="TaleSpire" Version="1.4.0"></PackageReference>
     <PackageReference Include="Talespire.BepInEx" Version="5.4.22"></PackageReference>
-    <PackageReference Include="TaleSpire.RadialUI" Version="2.4.1" />
+    <PackageReference Include="TaleSpire.RadialUI" Version="3.0.1" />
 
     <PackageReference Include="TaleSpire.SetInjectionFlagPlugin" Version="2.5.0" />
     <PackageReference Include="TaleSpire.ConfigurationManager" Version="0.13.0" />
