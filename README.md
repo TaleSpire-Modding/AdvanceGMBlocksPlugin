@@ -15,8 +15,8 @@ This plugin works by providing the GM block Radial UI component with a new Filte
 ## Shoutouts
 <!-- CONTRIBUTORS-START -->
 Shoutout to my past [Patreons](https://www.patreon.com/HolloFox), recognising your mighty support and contribution to my caffeine addiction:
-- [Demongund](https://www.twitch.tv/demongund)
-- [Tales Tavern](https://talestavern.com/) - MadWizard
+- [Demongund](https://www.twitch.tv/demongund) - Introduced me to TaleSpire
+- [Tales Tavern/MadWizard](https://talestavern.com/)
 - Joaqim Planstedt
 <!-- CONTRIBUTORS-END -->
 
