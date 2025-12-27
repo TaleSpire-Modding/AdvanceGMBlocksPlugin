@@ -1,3 +1,7 @@
+ ## 2.2.0
+* ### Dependency Cleanup
+ ## 2.1.0
+* ### Titan Size Patch
  ## 2.0.0
 * ### Add ability to make web requests on applying atmosphere block
 * ### Add ability to make inter-process calls (e.g. to Syrinscape Desktop Version)

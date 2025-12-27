@@ -1,13 +1,11 @@
 {
     "name": "Advance_GM_Blocks",
-    "version_number": "2.0.0",
+    "version_number": "2.2.0",
     "website_url": "https://github.com/TaleSpire-Modding/AdvanceGMBlocksPlugin",
     "description": "Extends configurability of GM blocks to apply selected attributes instead of all.",
     "dependencies": [
         "bbepisTaleSpire-BepInExPack-5.4.10",
-	"brcoding-SetInjectionFlagPlugin-2.3.0",
-	"HolloFox_TS-RadialUIPlugin-2.1.0",
-	"LordAshes-FileAccessPlugin-1.3.1",
-	"LordAshes-AssetDataPlugin-1.3.0"
+	"brcoding-SetInjectionFlagPlugin-3.1.0",
+	"HolloFox_TS-RadialUIPlugin-3.0.2"
     ]
 }
