@@ -4,6 +4,8 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using PluginUtilities;
 using RadialUI;
+using System.IO;
+using System.Reflection;
 using UnityEngine;
 
 namespace AdvanceGMBlocks
@@ -17,26 +19,66 @@ namespace AdvanceGMBlocks
 		public const string Guid = "org.hollofox.plugins.AdvanceGMBlocksPlugin";
 		public const string Version = "0.0.0.0";
 
+        internal static string LocalHidden;
+
         // Branch Icons
-        private static readonly Sprite AudioSprite = FileAccessPlugin.Image.LoadSprite("file-audio.png");
-        private static readonly Sprite MixerSprite = FileAccessPlugin.Image.LoadSprite("sliders.png");
-        private static readonly Sprite AtmosphereSprite = FileAccessPlugin.Image.LoadSprite("cloud.png");
+        private static readonly Sprite AudioSprite = LoadEmbeddedSprite("file-audio.png");
+        private static readonly Sprite MixerSprite = LoadEmbeddedSprite("sliders.png");
+        private static readonly Sprite AtmosphereSprite = LoadEmbeddedSprite("cloud.png");
 
         // Toggle Icons
-        private static readonly Sprite AmbientSprite = FileAccessPlugin.Image.LoadSprite("volume-low.png");
-        private static readonly Sprite MusicSprite = FileAccessPlugin.Image.LoadSprite("music.png");
-        private static readonly Sprite DayCycleSprite = FileAccessPlugin.Image.LoadSprite("sun.png");
-        private static readonly Sprite FogSprite = FileAccessPlugin.Image.LoadSprite("smog.png");
-        private static readonly Sprite ExposureSprite = FileAccessPlugin.Image.LoadSprite("cloud-sun.png");
-        private static readonly Sprite ImageSprite = FileAccessPlugin.Image.LoadSprite("image.png");
+        private static readonly Sprite AmbientSprite = LoadEmbeddedSprite("volume-low.png");
+        private static readonly Sprite MusicSprite = LoadEmbeddedSprite("music.png");
+        private static readonly Sprite DayCycleSprite = LoadEmbeddedSprite("sun.png");
+        private static readonly Sprite FogSprite = LoadEmbeddedSprite("smog.png");
+        private static readonly Sprite ExposureSprite = LoadEmbeddedSprite("cloud-sun.png");
+        private static readonly Sprite ImageSprite = LoadEmbeddedSprite("image.png");
 
-		/// <summary>
-		/// Awake plugin
-		/// </summary>
-		void Awake()
+
+        internal static Sprite LoadEmbeddedSprite(string path)
+        {
+            path = $"AdvanceGMBlocksPlugin.CustomData.Images.Icons.{path}";
+            var asm = Assembly.GetExecutingAssembly();
+            Stream stream = asm.GetManifestResourceStream(path);
+
+            if (stream == null)
+            {
+                Debug.LogError("Embedded resource not found: " + path);
+                return null;
+            }
+
+            byte[] buffer;
+            using (var ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                buffer = ms.ToArray();
+            }
+            stream.Dispose();
+
+            var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            if (!ImageConversion.LoadImage(tex, buffer))
+            {
+                Debug.LogError("Failed to load embedded PNG: " + path);
+                return null;
+            }
+
+            return Sprite.Create(
+                tex,
+                new Rect(0, 0, tex.width, tex.height),
+                new Vector2(0.5f, 0.5f)
+            );
+        }
+
+        /// <summary>
+        /// Awake plugin
+        /// </summary>
+        void Awake()
 		{
-			Logger.LogInfo("In Awake for Advance GM Blocks");
+            Logger.LogInfo("In Awake for Advance GM Blocks");
             Debug.Log("Advance GM Blocks Plug-in loaded");
+
+            LocalHidden = Path.GetDirectoryName(Info.Location) + "/BoardData";
+            Directory.CreateDirectory(LocalHidden);
 
             Harmony harmony = new Harmony(Guid);
             harmony.PatchAll();
@@ -57,7 +99,11 @@ namespace AdvanceGMBlocks
         {
             MapMenu mapMenu = MapMenuManager.OpenMenu(GMBlockInteractMenuBoardTool.block.WorldPosition,true);
 
-            string result = AssetDataPlugin.ReadInfo(Guid, _currentKey);
+            string filePath = Path.Join(AdvanceGMBlocksPlugin.LocalHidden, _currentKey);
+            string result = string.Empty;
+            if (File.Exists(filePath))
+                result = File.ReadAllText(filePath);
+            
             _currentData = string.IsNullOrEmpty(result) ? new GMBlockData() : JsonConvert.DeserializeObject<GMBlockData>(result);
 
             mapMenu.AddMenuItem(MapMenu.MenuType.BRANCH, AudioBranch,"Audio", icon: AudioSprite, obj:obj);
@@ -133,7 +179,7 @@ namespace AdvanceGMBlocks
         private void SaveCurrentData()
         {
             string serialized = JsonConvert.SerializeObject(_currentData);
-            AssetDataPlugin.SetInfo(Guid,_currentKey,serialized);
+            File.WriteAllText(Path.Join(LocalHidden, _currentKey), serialized);
         }
     }
 }

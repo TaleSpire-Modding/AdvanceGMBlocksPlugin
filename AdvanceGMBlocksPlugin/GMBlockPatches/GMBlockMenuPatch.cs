@@ -3,6 +3,7 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using TaleSpire.GameMaster.Blocks;
@@ -29,9 +30,12 @@ namespace AdvanceGMBlocks.GMBlockPatches
 
             GMDataBlockBase _base = ____base;
 
-            string result = 
-                AssetDataPlugin.ReadInfo(AdvanceGMBlocksPlugin.Guid, _base.AtmosphereBlock.Id.ToString());
+            string filePath = Path.Join(AdvanceGMBlocksPlugin.LocalHidden, _base.AtmosphereBlock.Id.ToString());
 
+            if (!File.Exists(filePath))
+                return true;
+            string result = File.ReadAllText(filePath);
+            
             if (string.IsNullOrWhiteSpace(result))
                 return true;
 

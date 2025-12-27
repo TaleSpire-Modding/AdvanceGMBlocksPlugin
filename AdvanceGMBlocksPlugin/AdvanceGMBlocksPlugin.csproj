@@ -18,6 +18,46 @@
     <Authors>HolloFox</Authors>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="CustomData\Images\Icons\cloud-sun.png" />
+    <None Remove="CustomData\Images\Icons\cloud.png" />
+    <None Remove="CustomData\Images\Icons\file-audio.png" />
+    <None Remove="CustomData\Images\Icons\image.png" />
+    <None Remove="CustomData\Images\Icons\music.png" />
+    <None Remove="CustomData\Images\Icons\sliders.png" />
+    <None Remove="CustomData\Images\Icons\smog.png" />
+    <None Remove="CustomData\Images\Icons\sun.png" />
+    <None Remove="CustomData\Images\Icons\volume-low.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CustomData\Images\Icons\cloud-sun.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\cloud.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\file-audio.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\image.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\music.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\sliders.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\smog.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\sun.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomData\Images\Icons\volume-low.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
