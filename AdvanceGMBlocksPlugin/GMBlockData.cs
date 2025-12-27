@@ -2,9 +2,25 @@
 {
     public sealed class GMBlockData
     {
+        public enum CallbackType
+        {
+            Process,
+            Get,
+            Post,
+            Put,
+            Delete
+        }
+
+        public sealed class CallbackData {
+            public string Endpoint = string.Empty;
+            public CallbackType MethodType = CallbackType.Get;
+            public string Payload = string.Empty;
+        }
+
         public Audio EnabledAudio = new Audio();
         public Mixer EnabledMixer = new Mixer();
         public Atmosphere EnabledAtmosphere = new Atmosphere();
+        public CallbackData Callback = new CallbackData();
 
         public sealed class Audio
         {

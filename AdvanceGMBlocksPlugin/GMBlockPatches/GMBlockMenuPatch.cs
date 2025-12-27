@@ -1,26 +1,41 @@
 ﻿using Bounce.Singletons;
 using HarmonyLib;
 using Newtonsoft.Json;
+using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Text;
 using TaleSpire.GameMaster.Blocks;
+using static AdvanceGMBlocks.GMBlockData;
 
 namespace AdvanceGMBlocks.GMBlockPatches
 {
+
+    [HarmonyPatch(typeof(GMBlockButtonAtmosphere), "OnOpenMenu")]
+    internal sealed class GMBlockMenuPatchOpen
+    {
+        internal static void Prefix(ref GMDataBlockBase ____base)
+        {
+            AdvanceGMBlocksPlugin._currentKey = ____base.AtmosphereBlock.Id.ToString();
+        }
+    }
+
     [HarmonyPatch(typeof(GMBlockButtonAtmosphere), "OnApply")] 
     internal sealed class GMBlockMenuPatch
     {
         internal static bool Prefix(MapMenuItem arg1, object arg2, ref GMDataBlockBase ____base)
         {
-            var original = AtmosphereManager.Instance.GetAtmosphere();
+            DataModel.AtmosphereData original = AtmosphereManager.Instance.GetAtmosphere();
 
-            var _base = ____base;
+            GMDataBlockBase _base = ____base;
 
-            var result = 
+            string result = 
                 AssetDataPlugin.ReadInfo(AdvanceGMBlocksPlugin.Guid, _base.AtmosphereBlock.Id.ToString());
 
             if (string.IsNullOrWhiteSpace(result))
                 return true;
 
-            var enabled = JsonConvert.DeserializeObject<GMBlockData>(result);
+            GMBlockData enabled = JsonConvert.DeserializeObject<GMBlockData>(result);
 
             if (!enabled.EnabledAudio.Ambient)
                 _base.AtmosphereBlock.Data.ambientMusic = original.ambientMusic;
@@ -52,6 +67,43 @@ namespace AdvanceGMBlocks.GMBlockPatches
             }
 
             SimpleSingletonBehaviour<AtmosphereManager>.Instance.SetAtmosphere(_base.AtmosphereBlock.Data, true);
+            if (!string.IsNullOrWhiteSpace(enabled.Callback.Endpoint))
+            {
+                Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri uri);
+                HttpClient client = new HttpClient();
+                switch (enabled.Callback.MethodType)
+                {
+                    case CallbackType.Get:
+                        if (Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri getUri))
+                            client.GetAsync(getUri);
+                        break;
+                    case CallbackType.Post:
+                        if (Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri postUri))
+                            client.PostAsync(uri, new StringContent(enabled.Callback.Payload, Encoding.UTF8, "application/json"));
+                        break;
+                    case CallbackType.Put:
+                        if (Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri putUri))
+                            client.PutAsync(uri, new StringContent(enabled.Callback.Payload, Encoding.UTF8, "application/json"));
+                        break;
+                    case CallbackType.Delete:
+                        if (Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri deleteUri))
+                            client.DeleteAsync(uri);
+                        break;
+                    case CallbackType.Process:
+                        // Desktop call
+                        try
+                        {
+                            Process.Start(enabled.Callback.Endpoint);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
             return false;
         }
     }

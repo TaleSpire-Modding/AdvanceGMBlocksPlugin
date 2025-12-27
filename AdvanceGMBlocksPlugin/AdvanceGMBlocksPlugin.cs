@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using AdvanceGMBlocksPlugin.SystemMessageExtension;
+using BepInEx;
 using DataModel;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -38,7 +39,7 @@ namespace AdvanceGMBlocks
 			Logger.LogInfo("In Awake for Advance GM Blocks");
             Debug.Log("Advance GM Blocks Plug-in loaded");
 
-            var harmony = new Harmony(Guid);
+            Harmony harmony = new Harmony(Guid);
             harmony.PatchAll();
             
             ModdingTales.ModdingUtils.AddPluginToMenuList(this, "HolloFoxes'");
@@ -49,26 +50,34 @@ namespace AdvanceGMBlocks
 					CloseMenuOnActivate = false,
 					Title = "Filters",
 					Action = OpenFilters,
-                    Icon = Icons.GetIconSprite("filter")
+                    // Icon = Icons.GetIconSprite("filter")
                 });
         }
 
 		public void OpenFilters(MapMenuItem mapmenuItem, object obj)
         {
-            var mapMenu = MapMenuManager.OpenMenu(GMBlockInteractMenuBoardTool.block.WorldPosition,true);
+            MapMenu mapMenu = MapMenuManager.OpenMenu(GMBlockInteractMenuBoardTool.block.WorldPosition,true);
 
-            _currentKey = (obj as AtmosphereBlock).Id.ToString();
-            var result =
-                AssetDataPlugin.ReadInfo(Guid, _currentKey);
+            string result = AssetDataPlugin.ReadInfo(Guid, _currentKey);
             _currentData = string.IsNullOrEmpty(result) ? new GMBlockData() : JsonConvert.DeserializeObject<GMBlockData>(result);
 
             mapMenu.AddMenuItem(MapMenu.MenuType.BRANCH, AudioBranch,"Audio", icon: AudioSprite, obj:obj);
             mapMenu.AddMenuItem(MapMenu.MenuType.BRANCH, MixerBranch,"Mixer", icon: MixerSprite, obj: obj);
             mapMenu.AddMenuItem(MapMenu.MenuType.BRANCH, AtmosphereBranch,"Atmosphere", icon: AtmosphereSprite, obj: obj);
+
+            mapMenu.AddToggleItem(!string.IsNullOrWhiteSpace(_currentData.Callback.Endpoint), (i, o) =>
+            {
+                SystemMessageCallbackExtension.AddCallbackInput(SystemMessage.Instance, "Set Callback Process", "This is for 3rd party integration/callback", 
+                    _currentData.Callback, delegate (GMBlockData.CallbackData callbackData)
+                    {
+                        _currentData.Callback = callbackData;
+                        SaveCurrentData();
+                    });
+            }, "Integrated Callback", obj: obj);
         }
 
         private static GMBlockData _currentData;
-        private static string _currentKey;
+        internal static string _currentKey;
 
         private void AudioBranch(MapMenu map, object obj)
         {
@@ -124,7 +133,7 @@ namespace AdvanceGMBlocks
 
         private void SaveCurrentData()
         {
-            var serialized = JsonConvert.SerializeObject(_currentData);
+            string serialized = JsonConvert.SerializeObject(_currentData);
             AssetDataPlugin.SetInfo(Guid,_currentKey,serialized);
         }
     }
