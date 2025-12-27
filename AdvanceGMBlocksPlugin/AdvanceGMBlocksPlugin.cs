@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using DataModel;
 using HarmonyLib;
-using LordAshes;
 using Newtonsoft.Json;
 using PluginUtilities;
 using RadialUI;
@@ -11,8 +10,6 @@ namespace AdvanceGMBlocks
 {
     [BepInPlugin(Guid, "Advance GM Blocks", Version)]
 	[BepInDependency(RadialUIPlugin.Guid)]
-	[BepInDependency(FileAccessPlugin.Guid)]
-	[BepInDependency(AssetDataPlugin.Guid)]
 	[BepInDependency(SetInjectionFlag.Guid)]
 	public sealed class AdvanceGMBlocksPlugin : BaseUnityPlugin
 	{
@@ -44,7 +41,7 @@ namespace AdvanceGMBlocks
             var harmony = new Harmony(Guid);
             harmony.PatchAll();
             
-            ModdingTales.ModdingUtils.Initialize(this, Logger, "HolloFoxes'");
+            ModdingTales.ModdingUtils.AddPluginToMenuList(this, "HolloFoxes'");
             
             RadialUIPlugin.AddCustomButtonGMBlock(Guid,
                 new MapMenu.ItemArgs
