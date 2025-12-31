@@ -73,7 +73,6 @@ namespace AdvanceGMBlocks.GMBlockPatches
             SimpleSingletonBehaviour<AtmosphereManager>.Instance.SetAtmosphere(_base.AtmosphereBlock.Data, true);
             if (!string.IsNullOrWhiteSpace(enabled.Callback.Endpoint))
             {
-                Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri uri);
                 HttpClient client = new HttpClient();
                 switch (enabled.Callback.MethodType)
                 {
@@ -83,15 +82,15 @@ namespace AdvanceGMBlocks.GMBlockPatches
                         break;
                     case CallbackType.Post:
                         if (Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri postUri))
-                            client.PostAsync(uri, new StringContent(enabled.Callback.Payload, Encoding.UTF8, "application/json"));
+                            client.PostAsync(postUri, new StringContent(enabled.Callback.Payload, Encoding.UTF8, "application/json"));
                         break;
                     case CallbackType.Put:
                         if (Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri putUri))
-                            client.PutAsync(uri, new StringContent(enabled.Callback.Payload, Encoding.UTF8, "application/json"));
+                            client.PutAsync(putUri, new StringContent(enabled.Callback.Payload, Encoding.UTF8, "application/json"));
                         break;
                     case CallbackType.Delete:
                         if (Uri.TryCreate(enabled.Callback.Endpoint, UriKind.Absolute, out Uri deleteUri))
-                            client.DeleteAsync(uri);
+                            client.DeleteAsync(deleteUri);
                         break;
                     case CallbackType.Process:
                         // Desktop call

@@ -1,3 +1,5 @@
+ ## 2.2.1
+* ### DependencyUnityPlugins is now used and implements logic for unpatching
  ## 2.2.0
 * ### Dependency Cleanup
  ## 2.1.0

@@ -13,7 +13,7 @@ namespace AdvanceGMBlocks
     [BepInPlugin(Guid, "Advance GM Blocks", Version)]
 	[BepInDependency(RadialUIPlugin.Guid)]
 	[BepInDependency(SetInjectionFlag.Guid)]
-	public sealed class AdvanceGMBlocksPlugin : BaseUnityPlugin
+	public sealed class AdvanceGMBlocksPlugin : DependencyUnityPlugin
 	{
 		// constants
 		public const string Guid = "org.hollofox.plugins.AdvanceGMBlocksPlugin";
@@ -69,21 +69,19 @@ namespace AdvanceGMBlocks
             );
         }
 
+        Harmony harmony;
+
         /// <summary>
         /// Awake plugin
         /// </summary>
-        void Awake()
-		{
-            Logger.LogInfo("In Awake for Advance GM Blocks");
-            Debug.Log("Advance GM Blocks Plug-in loaded");
-
+        protected override void OnAwake()
+        {
+            Logger.LogDebug("In Awake for Advance GM Blocks");
+            
             LocalHidden = Path.GetDirectoryName(Info.Location) + "/BoardData";
             Directory.CreateDirectory(LocalHidden);
 
-            Harmony harmony = new Harmony(Guid);
             harmony.PatchAll();
-            
-            ModdingTales.ModdingUtils.AddPluginToMenuList(this, "HolloFoxes'");
             
             RadialUIPlugin.AddCustomButtonGMBlock(Guid,
                 new MapMenu.ItemArgs
@@ -91,11 +89,23 @@ namespace AdvanceGMBlocks
 					CloseMenuOnActivate = false,
 					Title = "Filters",
 					Action = OpenFilters,
-                    // Icon = Icons.GetIconSprite("filter")
                 });
         }
 
-		public void OpenFilters(MapMenuItem mapmenuItem, object obj)
+        protected override void OnDestroyed()
+        {
+            // Remove Radial UI button
+            RadialUIPlugin.RemoveCustomButtonGMBlock(Guid);
+
+            LocalHidden = null;
+
+            // Unpatch Harmony patches
+            harmony.UnpatchSelf();
+
+            Logger.LogDebug("Advance GM Blocks unloaded");
+        }
+
+        public void OpenFilters(MapMenuItem mapmenuItem, object obj)
         {
             MapMenu mapMenu = MapMenuManager.OpenMenu(GMBlockInteractMenuBoardTool.block.WorldPosition,true);
 
