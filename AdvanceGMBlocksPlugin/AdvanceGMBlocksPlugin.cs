@@ -81,6 +81,7 @@ namespace AdvanceGMBlocks
             LocalHidden = Path.GetDirectoryName(Info.Location) + "/BoardData";
             Directory.CreateDirectory(LocalHidden);
 
+            harmony = new Harmony(Guid);
             harmony.PatchAll();
             
             RadialUIPlugin.AddCustomButtonGMBlock(Guid,

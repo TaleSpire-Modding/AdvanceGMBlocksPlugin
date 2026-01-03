@@ -1,3 +1,5 @@
+ ## 2.2.2
+* ### Fix null reference exception on startup
  ## 2.2.1
 * ### DependencyUnityPlugins is now used and implements logic for unpatching
  ## 2.2.0
