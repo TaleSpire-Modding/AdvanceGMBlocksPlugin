@@ -13,6 +13,9 @@ Shoutout to my past [Patreons](https://www.patreon.com/HolloFox) and [Discord](h
 - [Demongund](https://www.twitch.tv/demongund) - Introduced me to TaleSpire
 - [Tales Tavern/MadWizard](https://talestavern.com/)
 - Joaqim Planstedt
+- Gonsplitters
+- Poap
+- Simsete
 <!-- CONTRIBUTORS-END -->
 
 Simsete for this mod idea.
