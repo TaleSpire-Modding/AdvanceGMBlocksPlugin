@@ -1,3 +1,5 @@
+ ## 2.2.3
+* ### migrate to DependencyUnityPlugins<T> to allow enable/disable the plugin without uninstalling it via chainloader
  ## 2.2.2
 * ### Fix null reference exception on startup
  ## 2.2.1

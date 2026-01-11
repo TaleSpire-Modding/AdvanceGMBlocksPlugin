@@ -13,7 +13,7 @@ namespace AdvanceGMBlocks
     [BepInPlugin(Guid, "Advance GM Blocks", Version)]
 	[BepInDependency(RadialUIPlugin.Guid)]
 	[BepInDependency(SetInjectionFlag.Guid)]
-	public sealed class AdvanceGMBlocksPlugin : DependencyUnityPlugin
+	public sealed class AdvanceGMBlocksPlugin : DependencyUnityPlugin<AdvanceGMBlocksPlugin>
 	{
 		// constants
 		public const string Guid = "org.hollofox.plugins.AdvanceGMBlocksPlugin";
@@ -101,7 +101,7 @@ namespace AdvanceGMBlocks
             LocalHidden = null;
 
             // Unpatch Harmony patches
-            harmony.UnpatchSelf();
+            harmony?.UnpatchSelf();
 
             Logger.LogDebug("Advance GM Blocks unloaded");
         }
